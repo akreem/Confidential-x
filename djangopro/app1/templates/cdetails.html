@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}التأهيلات المضافة - التأهيلات الخارجية{% endblock %}
+{% block subtitle %}التأهيلات المضافة{% endblock %}
+{% block second_title %}<h2>التأهيلات المُضَافة</h2> {% endblock %}
+{% block content %}
+{% for t in travail_list %}
+<h5 style="font-family:Arial, Helvetica, sans-serif;font-weight: bold;text-align: center;"> 
+    {{t.objcour}}<br>مرجع البريد : {{t.refcour}}<br>تاريخ البريد : {{t.datecour}}</h5>
+{% endfor %}
+<div class="alert alert-info" style="text-align: right">
+    <strong>نتائج البحث :</strong>
+    {{max_index}}                    
+</div>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+        <thead class="thead-light">
+            <tr>
+                <th>ع/ر</th>
+                <th>رقم ب.ت.و</th>
+                <th>الإسم</th>
+                <th>اللقب</th>
+                <th>المهنة</th>
+                <th>التضمين</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rowval in pers %}
+            <tr class="table-success" style="font-weight: bold;">
+                <td>{{ rowval.index }}</td>
+                <td>{{ rowval.cin }}</td>
+                <td>{{ rowval.prenom }}</td>
+                <td>{{ rowval.nom }}</td>
+                <td>{{ rowval.PROFESSION }}</td>
+                <td>{{ rowval.tadhmin }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

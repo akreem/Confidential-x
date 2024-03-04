@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}أعمال الأقراص الليزرية - التأهيلات الخارجية{% endblock %}
+{% block subtitle %}أعمال الأقراص الليزرية{% endblock %}
+{% load static %}
+{% block second_title %}<h2>أعمال الأقراص الليزرية</h2>{% endblock %}
+{% block content %}
+{% load widget_tweaks %}
+
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+        <thead class="thead-light">
+            <tr>
+                <th>ع/ر</th>
+                <th>رقم العمل</th>
+                <th>مرجع البريد	</th>
+                <th>تاريخ البريد</th>
+                <th>الموضوع</th>
+                <th>الغرض</th>
+                <th>المستخدم</th>
+                <th>تاريخ الإنجاز</th>
+                <th>الحالة</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rowval in jobs %}
+            <tr class="table-info">
+                <td>{{ rowval.index }}</td>
+                <td>{{ rowval.idt }}</td>
+                <td>{{ rowval.refcour }}</td>
+                <td>{{ rowval.datecour }}</td>
+                <td>{{ rowval.obj }}</td>
+                <td>{{ rowval.gharadh }}</td>
+                <td>{{ rowval.user }}</td>
+                <td>{{ rowval.datejob }}</td>
+                {% if rowval.status == 'SCHEDULED'%}
+                <td class="bg-orange">
+                <span class="spinner-border spinner-border-sm" role="status"></span>
+                {% else %}
+                <td class="bg-green">
+                {% endif %}
+                    <strong class="alert-link">
+                        {% if rowval.status == 'SCHEDULED' %}جاري التنفيذ ...  {% else %}
+                           تم تنفيذ الطلب بنجاح  {% endif %}
+                    </strong>
+                </td>
+                <td>
+                    {% if rowval.status == 'SUCCESS'%}<a class="btn btn-info" href="/s4/appliedprev/{{rowval.idt}}">وردوا سابقا</a>
+                    <a class="btn btn-success" href="/s4/cdetails/{{rowval.idt}}">التأهيلات المضافة</a>{% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+{% block table_script %}
+<!-- Jquery DataTable Plugin Js -->
+<script src="{% static 'bundles/datatablescripts.bundle.js' %}"></script>
+<script src="{% static 'plugins/jquery-datatable/buttons/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-datatable/buttons/buttons.colVis.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-datatable/buttons/buttons.html5.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-datatable/buttons/buttons.print.min.js' %}"></script>
+<script src="{% static 'js/pages/tables/jquery-datatable.js' %}"></script>
+{% endblock %}

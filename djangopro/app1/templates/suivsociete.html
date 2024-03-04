@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}الواجهة الخاصة بالمؤسسات{% endblock %}
+{% block subtitle %}المؤسسات{% endblock %}
+{% load static %}
+{% block content %}
+<table class="table table-bordered table-striped table-hover js-basic-example dataTable" >
+    <thead class="thead-light">
+        <tr>
+            <th hidden>x</th>
+            <th>الرمز</th>
+            <th>الإسم</th>
+            <th>الإسم بالفرنسية</th>
+            <th>المعرف الوحيد</th>
+            <th>العنوان</th>
+            <th>الهاتف</th>
+            <th></th>
+        </tr>
+
+    </thead>
+    <tbody>
+        {% for rowval in socs_list %}
+        <tr class="table-info">
+                <td hidden>{{rowval.index}}</td>
+                <td>{{rowval.code}}</td>
+                <td>{{rowval.name}}</td>
+                <td>{% if rowval.namefr != null %}
+                    {{rowval.namefr}}
+                    {% endif %}
+                </td>
+                <td>{% if rowval.uid != null %}{{rowval.uid}}{% endif %}
+                </td>
+                <td>{% if rowval.address != null %}{{rowval.address}}{% endif %}
+                </td>
+                <td>{% if rowval.tel != null %}{{rowval.tel}}{% endif %}
+                </td>
+                <td><a class="btn btn-warning">تعديل</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a class="btn btn-block btn-success" href="addsocietes">إضافة شركة جديدة</a>
+
+
+{% endblock %}
+{% block table_script %}
+<!-- Jquery DataTable Plugin Js -->
+<script src="{% static 'bundles/datatablescripts.bundle.js' %}"></script>
+<script src="{% static 'plugins/jquery-datatable/buttons/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-datatable/buttons/buttons.colVis.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-datatable/buttons/buttons.html5.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-datatable/buttons/buttons.print.min.js' %}"></script>
+<script src="{% static 'js/pages/tables/jquery-datatable.js' %}"></script>
+{% endblock %}

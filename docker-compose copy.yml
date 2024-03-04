@@ -1,0 +1,31 @@
+version: '3'
+services:
+  Django:
+    image: django050124
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./djangopro:/djangopro
+    ports:
+      - "8000:8000"
+    networks:
+      - djangonetwork  
+
+  flask:
+    image: pythonxls_flask
+    volumes:
+      - ./pythonxls:/flaskexcel
+    ports:
+      - "8011:8000" 
+        
+  rabbit:
+    hostname: rabbit
+    image: "rabbitmq:3-management"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      - "15672:15672"
+      - "5672:5672"    
+networks:
+  djangonetwork:
+    driver: bridge         

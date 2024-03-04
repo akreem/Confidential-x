@@ -1,0 +1,76 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx-config/nginx.conf:/etc/nginx/conf.d/default.conf
+      - static_volume:/staticfiles
+    networks:
+      - djangonetwork  
+    depends_on:
+      - django
+      - flask  
+
+  django:
+    image: thprojectx_djangoredis
+    hostname: django
+    command: bash -c "python manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./djangopro:/djangopro
+      - static_volume:/djangopro/staticfiles
+    #ports:
+      #- "8000:8000"
+    environment:
+      - REDIS_HOST=redis  
+    networks:
+      - djangonetwork 
+
+  flask:
+    image: thprojectx_flaskredis
+    hostname: flask
+    volumes:
+      - ./pythonxls:/flaskexcel
+    networks:
+      - djangonetwork   
+    #ports:
+      #- "8011:5000" 
+
+  rabbit:
+    hostname: rabbit
+    image: "rabbitmq-management"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - djangonetwork  
+
+  worker:
+    image: theproject_worker
+    user: nobody
+    volumes:
+      - ./worker:/worker
+    depends_on:
+      - rabbit
+      - flask
+    networks:
+      - djangonetwork  
+
+  redis:
+    image: redis:latest
+    hostname: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - djangonetwork  
+
+volumes:
+  static_volume:
+
+networks:
+  djangonetwork:
+    driver: bridge         

@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block title %}البحث عن بريد - التأهيلات الخارجية{% endblock %}
+{% block subtitle %}البحث عن بريد{% endblock %}
+{% block content %}
+{% load widget_tweaks %}
+<div class="row clearfix">
+  <div class="col-lg-12">
+    <div class="card">
+      <form method="post">
+        {% csrf_token %}
+        <!--{{form}}-->
+        {% for field in form.visible_fields %}
+        <div class="form-group">
+          <label for="{{ field.id_for_label }}">{{ field.label}}</label>
+          {{  field|add_class:'form-control' }}
+          {% for error in field.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}  
+        </div>
+        {% endfor %}
+        <div class="form-actions">
+          <div class="text-center">
+            <button type="submit" class="btn btn-info" name="submit">
+              بحث
+            </button>
+            <a href="findcour" class="btn btn-dark" >بحث جديد</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!--<form method="get" dir="rtl">
+    <div class="form-body" dir="rtl">
+        <div class="form-group row">
+            <label class="col-md-2" style="font-weight: bold">رقم البريد</label>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="1">
+                        <div>
+                            <input type="text" class="form-control form-control-sm font-weight-bold">
+                        </div>
+                    </div>
+                    <label class="col-md-2" style="font-weight: bold">تاريخ البريد</label>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="1">
+                                <div class="form-group">
+                                    <input type="date" class="form-control form-control-sm font-weight-bold">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <input class="btn btn-primary btn-block" type="submit" name="valider" value="بحث" />
+    <input class="btn btn-dark btn-block" type="reset" onclick="window.location.href=window.location.href"
+        value="بحث جديد" />
+</form>-->
+<div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+        <thead class="thead-light">
+            <tr>
+                <th>ع/ر</th>
+                <th>رقم العمل</th>
+                <th>مرجع البريد</th>
+                <th>تاريخ البريد</th>
+                <th>الموضوع</th>
+                <th>الوحدة</th>
+                <th hidden></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rowval in trav_list %}
+            <tr class="table-success">
+                <td>{{ rowval.index }}</td>
+                <td>{{ rowval.ID_TRAVAIL }}</td>
+                <td>{{ rowval.REF_COUR }}</td>
+                <td>{{ rowval.DATE_COUR }}</td>
+                <td style='text-align: right'>{{ rowval.OBJ_COUR }}</td>
+                <td>{{ rowval.ABR_AR_UNITE }}</td>
+                <td style="text-align: center" hidden>
+                    <form method='POST' action='showpdf.php' target='_blank'>
+                        <input type='hidden' name='idd' value='" . $row[' IDD'] . "'>
+                        <input type='submit' class='btn btn-warning' value='الاطلاع على الوثيقة'>
+                    </form>
+                </td>
+                <td><!--<button class="btn btn-danger redirectButton" data-id="">تحميل قرص ليزري</button>-->
+                    
+                    {% if rowval.hasjob %}
+                    <a class="btn btn-success" href="/s4/appliedprev/{{rowval.ID_TRAVAIL}}">وردوا سابقا</a>
+                    {% else %}
+                    <!--<a class="btn btn-danger" href="/s4/{{rowval.ID_TRAVAIL}}/{{username}}" onmouseover="javascript:event.target.port=8011">تحميل قرص ليزري</a>-->
+                    <a class="btn btn-danger" href="/app/{{rowval.ID_TRAVAIL}}">تحميل قرص ليزري</a>
+
+                    {% endif %}
+                    <a class="btn btn-info" href="/s4/asyncenqext/{{rowval.ID_TRAVAIL}}">إضافة مطلب تأهيل</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<!--<script>
+    document.querySelectorAll('.redirectButton').forEach(function(button){
+    button.addEventListener('click', function(){
+
+    var username = "{{username}}";
+    var id = button.getAttribute('data-id');
+    var formData = new FormData();
+    formData.append('username', username);
+    formData.append('id', id);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost:8011/s4/11511', true);
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.setRequestHeader('X-Id', id);
+    xhr.setRequestHeader('X-Username', username);
+
+    xhr.send(formData);
+
+    xhr.onload = function(){
+        if(xhr.status == 200){
+            console.log('Response from Flask app:', xhr.responseText);
+            window.location.href = 'http://localhost:8011/s4/11511';
+        } 
+        else {
+            console.error('Error', xhr.statusText)
+        }
+        };
+    
+    });
+});
+</script>-->
+{% endblock %}

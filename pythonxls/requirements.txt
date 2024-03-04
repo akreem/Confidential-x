@@ -1,0 +1,6 @@
+Flask;
+oracledb;
+Jinja2;
+flask_cors;
+openpyxl;
+celery[redis];

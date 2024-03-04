@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}إضافة شركة جديدة{% endblock %}
+{% block subtitle %}إضافة شركة جديدة{% endblock %}
+{% block content %}
+{% load widget_tweaks %}
+<div class="row clearfix">
+  <div class="col-lg-12">
+    <div class="card">
+      <form method="post">
+        {% csrf_token %}
+        <!--{{form}}-->
+        {% for field in form.visible_fields %}
+        <div class="form-group">
+          <label for="{{ field.id_for_label }}">{{ field.label}}</label>
+          {{  field|add_class:'form-control' }}
+          {% for error in field.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}  
+        </div>
+        {% endfor %}
+
+
+        <!--<div class="form-group">{% render_field form.uid class="form-control" placeholder="المعرف الوحيد"  type="text" %}</div>
+        <div class="form-group">{% render_field form.name class="form-control" placeholder="الإسم بالعربية" type="text" %}</div>
+        <div class="form-group">{% render_field form.namefr class="form-control" placeholder="الإسم بالفرنسية" type="text" %}</div>
+        <div class="form-group">{% render_field form.res class="form-control" placeholder="العنوان" type="text" %}</div>
+        <div class="form-group">{% render_field form.tel class="form-control" placeholder="رقم الهاتف" type="text" %}</div>-->
+
+        <div class="form-actions">
+          <div class="text-center">
+            <button type="submit" class="btn btn-info" name="submit">
+              تسجيل
+            </button>
+            <button type="reset" class="btn btn-dark">إلغاء</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

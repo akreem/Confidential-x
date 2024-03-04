@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+{% block title %}اضافة مطلب تأهيل{% endblock %}
+{% block subtitle %}اضافة مطلب تأهيل{% endblock %}
+{% load static %}
+{% block content %}
+{% load widget_tweaks %}
+
+
+<script>
+    function search_cin() {
+        //console.log ("delete"+idd) ;
+        cin = document.getElementById('cin').value;
+        console.log(cin);
+        fichier = "http://localhost:8000/api/personnes/" + cin;
+
+        //  alert (fichier) ; 
+
+        if (window.XMLHttpRequest) {
+            obj = new XMLHttpRequest();
+        }
+        else if (window.ActiveXObject) { obj = new ActiveXObject("Microsoft.XMLHTTP"); }
+        else {
+            //alert("false") ; 
+            return (false);
+        }
+
+        if (obj.overrideMimeType) obj.overrideMimeType("text/xml");
+
+        obj.open("GET", fichier, false);
+        obj.send(null);
+
+        if (obj.readyState == 4) {
+            val_fich = (obj.responseText);
+        }
+
+
+        console.log(val_fich);
+        json_data = JSON.parse(val_fich);
+        prenom = json_data[0].prenom;
+        nom = json_data[0].nom;
+        prenpere = json_data[0].prenpere;
+        prengpere = json_data[0].prengpere;
+        nomprenmere = json_data[0].nomprenmere;
+        datnais = json_data[0].datnais;
+        lieunais = json_data[0].lieunais;
+        sitfam = json_data[0].sitfam;
+        nationalite = json_data[0].nationalite;
+        datecin = json_data[0].datecin;
+        sex = json_data[0].sex;
+        profession = json_data[0].profession;
+        residence = json_data[0].residence;
+
+
+        document.getElementById('prenom').value = prenom;
+        document.getElementById('nom').value = nom;
+        document.getElementById('prenpere').value = prenpere;
+        document.getElementById('prengpere').value = prengpere;
+        document.getElementById('nomprenmere').value = nomprenmere;
+        document.getElementById('datnais').value = datnais;
+        document.getElementById('lieunais').value = lieunais;
+        document.getElementById('sitfam').value = sitfam;
+        document.getElementById('nationalite').value = nationalite;
+        document.getElementById('datecin').value = datecin;
+        document.getElementById('sex').value = sex;
+        document.getElementById('profession').value = profession;
+        document.getElementById('residence').value = residence;
+
+        return null;
+    }
+
+</script>
+
+<div class="alert alert-info">
+    <div class="row">
+        <div class="col">
+            <strong style="font-size: 14px;">رقم العمل : </strong>
+            <a class="alert-link" style="color:rgb(58, 58, 58);">{{ param }}</a>
+        </div>
+        <div class="col">
+            <strong style="font-size: 14px;">الموضوع : </strong>
+            <a class="alert-link" style="color:rgb(58, 58, 58);">{{ obj }}</a>
+        </div>
+        <div class="col">
+            <strong style="font-size: 14px;">مرجع البريد : </strong>
+            <a class="alert-link" style="color:rgb(58, 58, 58);">{{ refcour }}</a>
+        </div>
+        <div class="col">
+            <strong style="font-size: 14px;">تاريخ البريد : </strong>
+            <a class="alert-link" style="color:rgb(58, 58, 58);">{{ datecour }}</a>
+        </div>
+        <div class="col">
+            <strong style="font-size: 14px;">الوحدة : </strong>
+            <a class="alert-link" style="color:rgb(58, 58, 58);">{{ unite }}</a>
+        </div>
+    </div>
+</div>
+<div class="row clearfix">
+    <div class="col-lg-12">
+        <div class="card">
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="form-group col-sm-3">
+                        <label for="{{ form.cin.id_for_label }}">{{ form.cin.label}}</label>
+                        {% render_field form.cin id="cin" class="form-control" placeholder=" ب ت و" type="text" onchange="search_cin()" %}
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label for="{{ form.prenom.id_for_label }}">{{ form.prenom.label}}</label>
+                        {% render_field form.prenom id="prenom" class="form-control" type="text" %}
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label for="{{ form.nom.id_for_label }}">{{ form.nom.label}}</label>
+                        {% render_field form.nom id="nom" class="form-control" type="text" %}
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        <label for="{{ form.prenpere.id_for_label }}">{{ form.prenpere.label}}</label>
+                        {% render_field form.prenpere id="prenpere" class="form-control" type="text" %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-3">
+                        <label for="{{ form.prengpere.id_for_label }}">{{ form.prengpere.label}}</label>
+                        {% render_field form.prengpere id="prengpere" class="form-control" type="text" %}
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        <label for="{{ form.nomprenmere.id_for_label }}">{{ form.nomprenmere.label}}</label>
+                        {% render_field form.nomprenmere id="nomprenmere" class="form-control" type="text" %}
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label for="{{ form.datnais.id_for_label }}">{{ form.datnais.label}}</label>
+                        {% render_field form.datnais id="datnais" class="form-control" type="text" %}
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label for="{{ form.lieunais.id_for_label }}">{{ form.lieunais.label}}</label>
+                        {% render_field form.lieunais id="lieunais" class="form-control" type="text" %}
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="form-group col-sm-3">
+                        <label for="{{ form.sitfam.id_for_label }}">{{ form.sitfam.label}}</label>
+                        {% render_field form.sitfam id="sitfam" class="form-control" type="text" %}
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label for="{{ form.nationalite.id_for_label }}">{{ form.nationalite.label}}</label>
+                        {% render_field form.nationalite id="nationalite" class="form-control" type="text" %}
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        <label for="{{ form.datecin.id_for_label }}">{{ form.datecin.label}}</label>
+                        {% render_field form.datecin id="datecin" class="form-control" type="text" %}
+
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        <label for="{{ form.sex.id_for_label }}">{{ form.sex.label}}</label>
+                        {% render_field form.sex id="sex" class="form-control" type="text" %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-4">
+                        <label for="{{ form.profession.id_for_label }}">{{ form.profession.label}}</label>
+                        {% render_field form.profession id="profession" class="form-control" type="text" %}
+
+                    </div>
+                    <div class="form-group col-sm-8">
+                        <label for="{{ form.residence.id_for_label }}">{{ form.residence.label}}</label>
+                        {% render_field form.residence id="residence" class="form-control" type="text" %}
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-4">
+                        <label for="{{ form.codtype.id_for_label }}">{{ form.codtype.label}}</label>
+                        {% render_field form.codtype class="form-control" type="text" %}
+
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label for="{{ form.cod_societe.id_for_label }}">{{ form.cod_societe.label}}</label>
+                        {% render_field form.cod_societe class="form-control" type="text" %}
+
+                    </div>
+                </div>
+
+        </div>
+
+
+
+
+
+        <div class="form-actions">
+            <div class="text-center">
+                <button type="submit" class="btn btn-info" name="submit">
+                    تسجيل
+                </button>
+                <button type="reset" class="btn btn-dark">إلغاء</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+</div>
+
+{% endblock %}

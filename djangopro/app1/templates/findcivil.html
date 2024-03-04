@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}البحث عن مدني - التأهيلات الخارجية{% endblock %}
+{% block subtitle %}البحث عن مدني{% endblock %}
+{% block content %}
+{% load widget_tweaks %}
+
+<form method="post">
+    {% csrf_token %}
+    <div class="row clearfix">
+
+        {% for field in form.visible_fields %}
+        <div class="col-lg-3 col-md-3 col-sm-3">
+            <div class="form-group">
+                {% render_field field class="form-control" placeholder=field.label %}
+                <!--<input for=field type="text" class="form-control" placeholder=>-->
+            </div>
+            {% for error in field.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    <div class="form-actions">
+        <div class="text-center">
+            <button class="btn btn-primary btn-block" type="submit" name="submit">
+                بحث
+            </button>
+            <button class="btn btn-dark btn-block" type="reset" onclick="window.location.href=window.location.href">بحث
+                جديد</button />
+        </div>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+        <thead class="thead-light">
+            <tr>
+                <th>ع/ر</th>
+                <th>رقم ب.ت.و</th>
+                <th>الإسم</th>
+                <th>إسم الأب</th>
+                <th>إسم الجد</th>
+                <th>اللقب</th>
+                <th>تاريخ الولادة </th>
+                <th>الجنس</th>
+                <th>إسم الأم</th>
+                <th>المهنة</th>
+                <th>الجنسية</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rowval in pers_list %}
+            <tr class="table-success">
+                <td>{{ rowval.index }}</td>
+                <td>{{ rowval.cin }}</td>
+                <td>{{ rowval.prenom }}</td>
+                <td>{% if rowval.prenpere != null %} {{ rowval.prenpere }} {% endif %}</td>
+                <td>{% if rowval.prengpere != null %}{{ rowval.prengpere }} {% endif %}</td>
+                <td>{{ rowval.nom }}</td>
+                <td>{% if rowval.datnais != null %} {{ rowval.datnais }} {% endif %}</td>
+                <td>{% if rowval.sex != null %} {{ rowval.sex }} {% endif %}</td>
+                <td>{% if rowval.nomprenmere != null %} {{ rowval.nomprenmere }} {% endif %}</td>
+                <td>{% if rowval.profession != null %} {{ rowval.profession }} {% endif %}</td>
+                <td>{% if rowval.nationalite != null %} {{ rowval.nationalite }} {% endif %}</td>
+                <td>
+                    <a class="btn btn-danger" href="/s4/profile/{{rowval.cin}}">فتح الملف</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}الواجهة الخاصة بالمؤسسات{% endblock %}
+{% block subtitle %}المؤسسات{% endblock %}
+{% load static %}
+{% block content %}
+<table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+    <thead>
+        <tr>
+            <th> رقم العمل</th>
+            <th>الموضوع </th>
+            <th>رقم البريد</th>
+            <th>تاريخ البريد</th>
+            <th>عدد مطالب التأهيل</th>
+            <th></th>
+        </tr>
+
+    </thead>
+    <tbody>
+        {% for rowval in travs_list %}
+        <tr>
+                <td>{{rowval.id}}</td>
+                <td>{{rowval.obj}}</td>
+                <td>{{rowval.refcour}}</td>
+                <td>{{rowval.datecour}}</td>
+                <td>{{rowval.countx}}</td>
+                <td>
+                    <a href="{% url 'asyncenqextRunCommit' idtrav=rowval.id %}" class="btn btn-dark">تسجيل</a>
+                </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}
+{% block table_script %}
+<!-- Jquery DataTable Plugin Js -->
+<script src="{% static 'bundles/datatablescripts.bundle.js' %}"></script>
+<script src="{% static 'plugins/jquery-datatable/buttons/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-datatable/buttons/buttons.colVis.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-datatable/buttons/buttons.html5.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-datatable/buttons/buttons.print.min.js' %}"></script>
+<script src="{% static 'js/pages/tables/jquery-datatable.js' %}"></script>
+{% endblock %}
