@@ -15,11 +15,11 @@ app = Celery('tasks',
              backend='rpc://')
 
 def create_oracle_connection():
-    User = 'AISSAOUI'
-    Password = 'AISSAOUI2020*'
-    Host = '192.168.0.204'
+    User = 'ISSAOUI'
+    Password = 'pass*'
+    Host = '192.168.0.x'
     Port = '1521'
-    Service_name = 'mydbase'
+    Service_name = 'Service_name'
 
     #Create a connection
     connection = oracledb.connect(user=User, password=Password, host=Host, port=Port, service_name=Service_name)
